@@ -5,7 +5,7 @@ import AppContext from "./context/AppContext";
 
 function CreateNoteModal() {
   // Accessing addNoteData function from context
-  const { addNoteData } = useContext(AppContext);
+  const { addNoteData, notesData } = useContext(AppContext);
 
   const [groupName, setGroupName] = useState("");
   const [selectedColor, setSelectedColor] = useState("");
@@ -19,7 +19,7 @@ function CreateNoteModal() {
 
     // Format data
     const newData = {
-      id: localStorage.length, // Assigning id based on local storage length
+      id: notesData.length, // Assigning id based on local storage length
       name: groupName,
       color: selectedColor,
       notes: [],
@@ -42,7 +42,7 @@ function CreateNoteModal() {
   return (
     <Modal>
       <Modal.Open opens="note-modal">
-        <button className="font-nunito text-md font-semibold text-primary-normal_gray w-[93px] h-[93px] bg-background-blue flex justify-center items-center rounded-full">
+        <button className="font-nunito text-md font-semibold text-primary-normal_gray w-[75px] h-[75px] sm:w-[93px] sm:h-[93px] bg-background-blue flex justify-center items-center rounded-full">
           <img src={plus} alt="Add" />
         </button>
       </Modal.Open>

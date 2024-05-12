@@ -26,7 +26,6 @@ export const AppProvider = ({ children }) => {
       const selectedNoteData = notesData.find(
         (item) => item.id === selectedNote
       );
-      console.log(selectedNoteData);
       if (selectedNoteData) {
         setSelectedNoteDetails(selectedNoteData);
       }
@@ -47,7 +46,6 @@ export const AppProvider = ({ children }) => {
 
   // Function to add a new note to the notes array of a specific object in notesData
   const addNoteToSelected = (selectedID, newNote) => {
-    console.log(selectedID, newNote);
     const updatedData = notesData.map((item) => {
       if (item.id === selectedID) {
         return {

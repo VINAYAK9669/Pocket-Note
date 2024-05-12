@@ -1,8 +1,9 @@
 /* eslint-disable no-unused-vars */
 import { useContext, useEffect, useState } from "react";
-import { arrrow_diabled_icon } from "./useImport";
+import { arrow_enabled, arrrow_diabled_icon, back_arrow } from "./useImport";
 import AppContext from "./context/AppContext";
 import FormatDate from "./hooks/useFormatDate";
+import useDeviceWidth from "./hooks/useDeviceWidth";
 
 function IndividualNotes() {
   const {
@@ -11,9 +12,8 @@ function IndividualNotes() {
     addNoteToSelected,
     selectedNoteDetails,
     getSelectedIdDetails,
-    notesData,
+    changeNote,
   } = useContext(AppContext);
-  console.log(selectedNoteDetails);
 
   const [newNote, setNewNote] = useState("");
 
@@ -29,9 +29,10 @@ function IndividualNotes() {
         date: currentDate,
         time: currentTime,
       };
+
       addNoteToSelected(selectedNote, noteObject);
 
-      setNewNote(""); // Clear the textarea after submitting
+      setNewNote("");
       getSelectedIdDetails();
     }
   };
@@ -41,9 +42,14 @@ function IndividualNotes() {
     getSelectedIdDetails();
   }, [selectedNote]);
 
+  const innerWidth = useDeviceWidth(640);
+
   return (
     <div className="flex flex-col justify-between relative h-full ">
       <div className="flex  gap-[1.5rem] items-center justify-start pl-5 bg-background-blue h-[12%] min-h-[98px]">
+        {innerWidth && (
+          <img src={back_arrow} onClick={() => changeNote(null)} />
+        )}
         <div
           className="w-[68.9px] h-[68.9px] flex items-center rounded-full justify-center "
           style={{ backgroundColor: `${selectedNoteDetails.color}` }}
@@ -58,7 +64,7 @@ function IndividualNotes() {
             : selectedNoteDetails?.name}
         </label>
       </div>
-      <div className="h-[60%]">
+      <div className="max-h-[60%]">
         <div className="flex flex-col gap-[1rem] pt-3 px-5 overflow-y-auto h-full main-scrollbar">
           {selectedNoteDetails?.notes?.map((note, id) => (
             <div
@@ -77,23 +83,31 @@ function IndividualNotes() {
           ))}
         </div>
       </div>
-      <div className="bg-background-blue w-full flex justify-center items-center h-full py-8 relative">
+      <div className="bg-background-blue w-full flex justify-center items-center h-full py-3 md:py-8 relative md:max-h-[255px] max-h-[130px]">
         <div className="relative w-[90%] h-full">
           <textarea
             value={newNote}
             onChange={(e) => setNewNote(e.target.value)}
-            className="w-full outline-none px-4 py-4 font-Roboto text-5.5xl text-primary-gray h-full resize-none rounded-[9px]"
+            className="w-full outline-none px-4 py-4 font-Roboto text-[17.71px] md:text-5.5xl text-primary-gray h-full resize-none rounded-[9px]"
             placeholder="Enter your text here..........."
           ></textarea>
           <button
-            className="absolute top-[70%] right-[2%]"
+            className="absolute top-[67%] right-[2%]"
             onClick={handleNoteSubmit}
           >
-            <img
-              src={arrrow_diabled_icon}
-              alt="button"
-              className="w-[34.44px] h-[29px]"
-            />
+            {newNote.length ? (
+              <img
+                src={arrow_enabled}
+                alt="button"
+                className="w-[21px] h-[17.68px] md:w-[34.44px] md:h-[29px]"
+              />
+            ) : (
+              <img
+                src={arrrow_diabled_icon}
+                alt="button"
+                className="w-[21px] h-[17.68px] md:w-[34.44px] md:h-[29px]"
+              />
+            )}
           </button>
         </div>
       </div>
